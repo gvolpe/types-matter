@@ -12,7 +12,8 @@ author:              Gabriel Volpe
 maintainer:          volpegabriel@gmail.com
 
 library
-  exposed-modules:     Http
+  exposed-modules:     Foldy
+                     , Http
                      , Stringy
   build-depends:       base ^>=4.12.0.0
                      , refined >= 0.4.2 && < 0.5
