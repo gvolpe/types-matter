@@ -6,7 +6,6 @@ module Stringy where
 import           Control.Monad                  ( unless )
 import           Data.Typeable                  ( typeOf )
 import           Refined
-import           Text.Read                      ( readMaybe )
 
 showName :: String -> String -> String -> String
 showName username name email =
@@ -44,10 +43,7 @@ mkName n  = Just (Name n)
 
 -- Let's pretend we validate it properly
 mkEmail :: String -> Maybe Email
-mkEmail [] = Nothing
-mkEmail e  = case (readMaybe e :: Maybe Int) of
-  Just _  -> Nothing
-  Nothing -> Just (Email e)
+mkEmail e = if '@' `elem` e then Just (Email e) else Nothing
 
 -- Refinement types --
 

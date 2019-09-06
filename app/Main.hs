@@ -17,7 +17,7 @@ stringProgram = do
   username  = fromMaybe (error "Invalid username") (mkUsername "gvolpe")
   name      = fromMaybe (error "Invalid name") (mkName "Gabriel")
   email     = fromMaybe (error "Invalid email") (mkEmail "gvolpe@gmail.com")
-  -- email    = fromMaybe (error "Invalid email") (mkEmail "123") -- runtime error
+  --email    = fromMaybe (error "Invalid email") (mkEmail "123") -- runtime error
   username' = $$(refineTH "gvolpe") :: Username'
   name'     = $$(refineTH "Gabriel") :: Name'
   email'    = $$(refineTH "gvolpe@github.com") :: Email'
@@ -33,4 +33,4 @@ uriProgram = do
   port' = $$(refineTH 8080) :: HttpPort'
 
 main :: IO ()
-main = stringProgram
+main = uriProgram
