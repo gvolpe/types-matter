@@ -1,5 +1,5 @@
 {-# LANGUAGE DataKinds, OverloadedStrings, RecordWildCards #-}
-{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
 
 module Stringy where
 
