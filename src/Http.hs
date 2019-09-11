@@ -12,9 +12,6 @@ import           Language.Haskell.TH.Syntax     ( Lift(..) )
 import           Prelude                 hiding ( null )
 import           Refined
 
-instance Predicate NonEmpty Text where
-  validate p value = validate p (unpack value)
-
 newtype HttpHost = HttpHost { unHost :: Text } deriving Show
 newtype HttpPort = HttpPort { unPort :: Int } deriving Show
 newtype HttpUri = HttpUri { unUri :: Text } deriving Show
@@ -33,6 +30,9 @@ mkUri HttpHost {..} HttpPort {..} =
   HttpUri (unHost <> ":" <> pack (show unPort))
 
 -- Refinement types --
+
+instance Predicate NonEmpty Text where
+  validate p value = validate p (unpack value)
 
 -- Validation happens at compile time
 type HttpHost' = Refined NonEmpty Text
