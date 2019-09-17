@@ -1,14 +1,11 @@
-{-# LANGUAGE OverloadedStrings, RecordWildCards, ViewPatterns #-}
-{-# LANGUAGE DataKinds, FlexibleInstances, MultiParamTypeClasses #-}
+{-# LANGUAGE DataKinds, OverloadedStrings, RecordWildCards, ViewPatterns #-}
 
 module Http where
 
 import           Data.Text                      ( Text
                                                 , null
                                                 , pack
-                                                , unpack
                                                 )
-import           Language.Haskell.TH.Syntax     ( Lift(..) )
 import           Prelude                 hiding ( null )
 import           Refined
 
@@ -31,9 +28,6 @@ mkUri HttpHost {..} HttpPort {..} =
 
 -- Refinement types --
 
-instance Predicate NonEmpty Text where
-  validate p value = validate p (unpack value)
-
 -- Validation happens at compile time
 type HttpHost' = Refined NonEmpty Text
 -- https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
@@ -43,7 +37,3 @@ type HttpPort' = Refined (FromTo 1024 49151) Int
 mkUri' :: HttpHost' -> HttpPort' -> HttpUri
 mkUri' host port =
   HttpUri (unrefine host <> ":" <> pack (show $ unrefine port))
-
--- Or use: https://hackage.haskell.org/package/th-lift-instances
-instance Lift Text where
-  lift t = lift (unpack t)

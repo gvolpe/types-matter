@@ -5,6 +5,7 @@ module Main where
 import           Data.Maybe                     ( fromMaybe )
 import           Http
 import           Refined
+import           Refined.Instances              ( )
 import           Stringy
 
 stringProgram :: IO ()
