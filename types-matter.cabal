@@ -17,16 +17,16 @@ library
                      , Refined.Instances
                      , Stringy
   build-depends:       base ^>=4.12.0.0
-                     , refined >= 0.4.2 && < 0.5
-                     , text >= 1.2.3 && < 1.3
-                     , template-haskell >= 2.14.0 && < 2.15
+                     , refined
+                     , text
+                     , template-haskell
   hs-source-dirs:      src
   default-language:    Haskell2010
 
 executable types-matter
   main-is:             Main.hs
   build-depends:       base ^>=4.12.0.0
-                     , refined >= 0.4.2 && < 0.5
+                     , refined
                      , types-matter
   hs-source-dirs:      app
   default-language:    Haskell2010
