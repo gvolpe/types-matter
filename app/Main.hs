@@ -4,6 +4,7 @@ module Main where
 
 import           Data.Maybe                     ( fromMaybe )
 import           Http
+import           ParValidation                  ( validationProgram )
 import           Refined
 import           Refined.Instances              ( )
 import           Stringy
@@ -34,4 +35,4 @@ uriProgram = do
   port' = $$(refineTH 8080) :: HttpPort'
 
 main :: IO ()
-main = uriProgram
+main = validationProgram
