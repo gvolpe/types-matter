@@ -29,7 +29,6 @@ ref :: Predicate p x => x -> Eff (Refined p x)
 ref x = left (\e -> [pack $ show e]) (refine x)
 
 validationProgram :: IO ()
-validationProgram =
-  case parMapN (ref 10 :: Eff Age) (ref "" :: Eff Name) Person of
-    (Left  e) -> traverse_ print e
-    (Right p) -> print p
+validationProgram = case parMapN (ref 10) (ref "") Person of
+  (Left  e) -> traverse_ print e
+  (Right p) -> print p
