@@ -1,7 +1,6 @@
-{ nixpkgs ? import (fetchTarball "https://github.com/NixOS/nixpkgs-channels/archive/1fe82110feb.tar.gz") {} }:
-
 let
-  inherit (nixpkgs) haskellPackages;
+  pkgs = import (fetchTarball "https://github.com/NixOS/nixpkgs-channels/archive/1fe82110feb.tar.gz") {};
+  inherit (pkgs) haskellPackages;
   drv = haskellPackages.callCabal2nix "types-matter" ./. {};
 
 in

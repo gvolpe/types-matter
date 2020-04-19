@@ -2,7 +2,7 @@
 
 module Refined.Instances where
 
-import           Control.Monad                  ( unless )
+import           Control.Monad                  ( when )
 import           Data.Text                      ( Text
                                                 , null
                                                 , unpack
@@ -14,7 +14,7 @@ import           Refined
 
 instance Predicate NonEmpty Text where
   --validate p value = validate p (unpack value) -- validate using String instance
-  validate p value = unless (not $ null value)
+  validate p value = when (null value)
     $ throwRefineOtherException (typeOf p) "Text cannot be empty"
 
 -- Or use: https://hackage.haskell.org/package/th-lift-instances
