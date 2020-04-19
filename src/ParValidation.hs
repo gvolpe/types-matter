@@ -8,6 +8,7 @@ where
 import           Control.Arrow                  ( left )
 import           Control.Parallel
 import           Control.Parallel.Class
+import           Data.Foldable                  ( traverse_ )
 import           Data.Text                      ( Text
                                                 , pack
                                                 )
@@ -29,5 +30,6 @@ ref x = left (\e -> [pack $ show e]) (refine x)
 
 validationProgram :: IO ()
 validationProgram =
-  let person = parMapN (ref 10 :: Eff Age) (ref "" :: Eff Name) Person
-  in  print (show person)
+  case parMapN (ref 10 :: Eff Age) (ref "" :: Eff Name) Person of
+    (Left  e) -> traverse_ print e
+    (Right p) -> print p
