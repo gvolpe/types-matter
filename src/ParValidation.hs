@@ -58,7 +58,7 @@ mkPersonSeq a n = do
 mkPerson :: Int -> Text -> Eff Person
 mkPerson a n = toEither $ Person <$> fromEither (ref a) <*> fromEither (ref n)
 
--------------- Zipping Lists ----------------------
+-------------- Zip Lists --------------------------
 
 n1 :: [Int]
 n1 = [1 .. 5]

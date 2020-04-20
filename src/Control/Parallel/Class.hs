@@ -9,8 +9,10 @@ import           Data.Validation                ( Validation
                                                 , fromEither
                                                 )
 
--- | The `Parallel` class abstracts over monads which support
--- | parallel composition via some related `Applicative`.
+{-
+ - The `Parallel` class abstracts over monads which support
+ -  parallel composition via some related `Applicative`.
+ -}
 class (Monad m, Applicative f) => Parallel f m | m -> f, f -> m where
   parallel :: m :~> f
   sequential :: f :~> m
