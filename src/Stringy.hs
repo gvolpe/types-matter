@@ -1,4 +1,4 @@
-{-# LANGUAGE DataKinds, OverloadedStrings, RecordWildCards #-}
+{-# LANGUAGE DataKinds, OverloadedStrings #-}
 {-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
 
 module Stringy where
@@ -17,19 +17,13 @@ showName username name email =
     <> " and your email is "
     <> email
 
-newtype Username = Username { unUsername :: String }
-newtype Name = Name { unName :: String }
-newtype Email = Email { unEmail :: String }
+newtype Username = Username String
+newtype Name = Name String
+newtype Email = Email String
 
 showName' :: Username -> Name -> Email -> String
-showName' Username {..} Name {..} Email {..} =
-  "Hi "
-    <> unName
-    <> "! "
-    <> "Your username is "
-    <> unUsername
-    <> " and your email is "
-    <> unEmail
+showName' (Username u) (Name n) (Email e) =
+  "Hi " <> n <> "! " <> "Your username is " <> u <> " and your email is " <> e
 
 -- Smart constructors --
 

@@ -1,4 +1,4 @@
-{-# LANGUAGE DataKinds, OverloadedStrings, RecordWildCards, ViewPatterns #-}
+{-# LANGUAGE DataKinds, OverloadedStrings, ViewPatterns #-}
 
 module Http where
 
@@ -9,9 +9,9 @@ import           Data.Text                      ( Text
 import           Prelude                 hiding ( null )
 import           Refined
 
-newtype HttpHost = HttpHost { unHost :: Text } deriving Show
-newtype HttpPort = HttpPort { unPort :: Int } deriving Show
-newtype HttpUri = HttpUri { unUri :: Text } deriving Show
+newtype HttpHost = HttpHost Text deriving Show
+newtype HttpPort = HttpPort Int deriving Show
+newtype HttpUri = HttpUri Text deriving Show
 
 mkHttpHost :: Text -> Maybe HttpHost
 mkHttpHost (null -> True) = Nothing
@@ -23,8 +23,7 @@ mkHttpPort n = if n >= 1024 && n <= 49151 then Just (HttpPort n) else Nothing
 
 -- We assume the inputs are validated
 mkUri :: HttpHost -> HttpPort -> HttpUri
-mkUri HttpHost {..} HttpPort {..} =
-  HttpUri (unHost <> ":" <> pack (show unPort))
+mkUri (HttpHost h) (HttpPort p) = HttpUri (h <> ":" <> pack (show p))
 
 -- Refinement types --
 
