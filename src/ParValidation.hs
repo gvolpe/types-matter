@@ -7,9 +7,11 @@ module ParValidation
 where
 
 import           Control.Arrow                  ( left )
+import           Control.Concurrent             ( threadDelay )
 import           Control.Parallel
 import           Control.Parallel.Class
 import           Data.Foldable                  ( traverse_ )
+import           Data.Functor                   ( void )
 import           Data.Text                      ( Text
                                                 , pack
                                                 )
@@ -18,8 +20,7 @@ import           Data.Validation                ( fromEither
                                                 )
 import           Refined
 import           Refined.Instances              ( )
-
-type Eff a = Either [Text] a
+import           System.Random                  ( randomRIO )
 
 type Name = Refined NonEmpty Text
 type Age = Refined (GreaterThan 17) Int
@@ -28,17 +29,6 @@ data Person = Person
   { personAge :: Age
   , personName :: Name
   } deriving Show
-
-ref :: Predicate p x => x -> Eff (Refined p x)
-ref x = left (\e -> [pack $ show e]) (refine x)
-
-makePerson :: Int -> Text -> Eff Person
-makePerson a n = parMapN (ref a) (ref n) Person
-
-validationProgram :: IO ()
-validationProgram = case makePerson 0 "" of
-  (Left  e) -> traverse_ print e
-  (Right p) -> print p
 
 -------------- Refinement types -------------------
 
@@ -53,10 +43,25 @@ mkPersonSeq a n = do
   name <- refine n
   return $ Person age name
 
--------------- Without Parallel -------------------
+-------------- Parallel Validation (manually) -------------------
+
+type Eff a = Either [Text] a
+
+ref :: Predicate p x => x -> Eff (Refined p x)
+ref x = left (\e -> [pack $ show e]) (refine x)
 
 mkPerson :: Int -> Text -> Eff Person
 mkPerson a n = toEither $ Person <$> fromEither (ref a) <*> fromEither (ref n)
+
+-------------- Parallel Validation -------------
+
+makePerson :: Int -> Text -> Eff Person
+makePerson a n = parMapN (ref a) (ref n) Person
+
+validationProgram :: IO ()
+validationProgram = case makePerson 0 "" of
+  (Left  e) -> traverse_ print e >> testPar
+  (Right p) -> print p
 
 -------------- Zip Lists --------------------------
 
@@ -72,3 +77,13 @@ n3 = (+) <$> n1 <*> n2
 n4 :: [Int]
 n4 = parMapN n1 n2 (+)
 --n4 = getZipList $ (+) <$> ZipList n1 <*> ZipList n2
+
+-------------- Par Traverse -----------------------
+
+randomDelay :: IO ()
+randomDelay = do
+  r <- randomRIO (1, 10)
+  threadDelay (r * 500000)
+
+testPar :: IO ()
+testPar = pure () -- void $ parTraverse (\n -> randomDelay >> print n) [1 .. 10]
