@@ -20,9 +20,9 @@ stringProgram = do
   name      = fromMaybe (error "Invalid name") (mkName "Gabriel")
   email     = fromMaybe (error "Invalid email") (mkEmail "gvolpe@gmail.com")
   --email    = fromMaybe (error "Invalid email") (mkEmail "123") -- runtime error
-  username' = $$(refineTH "gvolpe") :: Username'
-  name'     = $$(refineTH "Gabriel") :: Name'
-  email'    = $$(refineTH "gvolpe@github.com") :: Email'
+  username' = UsernameR $$(refineTH "gvolpe")
+  name'     = NameR $$(refineTH "Gabriel")
+  email'    = EmailR $$(refineTH "gvolpe@github.com")
 
 uriProgram :: IO ()
 uriProgram = do

@@ -51,12 +51,16 @@ type Username' = Refined NonEmpty String
 type Name' = Refined NonEmpty String
 type Email' = Refined EmailPred String
 
-showNameRefined :: Username' -> Name' -> Email' -> String
-showNameRefined username name email =
+newtype UsernameR = UsernameR Username'
+newtype NameR = NameR Name'
+newtype EmailR = EmailR Email'
+
+showNameRefined :: UsernameR -> NameR -> EmailR -> String
+showNameRefined (UsernameR u) (NameR n) (EmailR e) =
   "Hi "
-    <> unrefine name
+    <> unrefine n
     <> "! "
     <> "Your username is "
-    <> unrefine username
+    <> unrefine u
     <> " and your email is "
-    <> unrefine email
+    <> unrefine e
