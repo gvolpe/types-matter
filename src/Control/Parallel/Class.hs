@@ -1,8 +1,9 @@
-{-# LANGUAGE FunctionalDependencies, MultiParamTypeClasses, TypeOperators #-}
+{-# LANGUAGE FunctionalDependencies, TypeOperators #-}
 
 module Control.Parallel.Class where
 
 import           Control.Applicative            ( ZipList(..) )
+import           Control.Concurrent.Async       ( Concurrently(..))
 import           Control.Natural                ( (:~>)(..) )
 import           Data.Validation                ( Validation
                                                 , toEither
@@ -24,3 +25,7 @@ instance Semigroup e => Parallel (Validation e) (Either e) where
 instance Parallel ZipList [] where
   parallel   = NT ZipList
   sequential = NT getZipList
+
+instance Parallel Concurrently IO where
+  parallel   = NT Concurrently
+  sequential = NT runConcurrently

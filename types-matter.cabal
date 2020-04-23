@@ -20,8 +20,10 @@ library
                      , Refined.Instances
                      , Stringy
   build-depends:       base ^>=4.12.0.0
-                     , refined
+                     , async
                      , natural-transformation
+                     , random
+                     , refined
                      , text
                      , template-haskell
                      , validators
