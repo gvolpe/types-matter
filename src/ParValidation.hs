@@ -11,7 +11,6 @@ import           Control.Concurrent             ( threadDelay )
 import           Control.Parallel
 import           Control.Parallel.Class
 import           Data.Foldable                  ( traverse_ )
-import           Data.Functor                   ( void )
 import           Data.Text                      ( Text
                                                 , pack
                                                 )
@@ -60,7 +59,7 @@ makePerson a n = parMapN (ref a) (ref n) Person
 
 validationProgram :: IO ()
 validationProgram = case makePerson 0 "" of
-  (Left  e) -> traverse_ print e >> testPar
+  (Left  e) -> traverse_ print e
   (Right p) -> print p
 
 -------------- Zip Lists --------------------------
@@ -85,5 +84,16 @@ randomDelay = do
   r <- randomRIO (1, 10)
   threadDelay (r * 500000)
 
-testPar :: IO ()
-testPar = pure () -- void $ parTraverse (\n -> randomDelay >> print n) [1 .. 10]
+traverseEither :: IO ()
+traverseEither =
+  print (traverse (\n -> Left [show n]) [1 .. 10] :: Either [String] [Int])
+
+parTraverseEither :: IO ()
+parTraverseEither =
+  print (parTraverse (\n -> Left [show n]) [1 .. 10] :: Either [String] [Int])
+
+traverseIO :: IO ()
+traverseIO = traverse_ (\n -> randomDelay >> print n) [1 .. 10]
+
+parTraverseIO :: IO ()
+parTraverseIO = parTraverse_ (\n -> randomDelay >> print n) [1 .. 10]
