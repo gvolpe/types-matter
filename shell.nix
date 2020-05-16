@@ -1,6 +1,6 @@
 let
   # unstable packages on May 13th
-  pkgs = import <nixpkgs> (fetchTarball "https://github.com/NixOS/nixpkgs-channels/archive/6bcb1dec8ea.tar.gz") {};
+  pkgs = import (fetchTarball "https://github.com/NixOS/nixpkgs-channels/archive/6bcb1dec8ea.tar.gz") {};
   inherit (pkgs) haskellPackages;
   drv = haskellPackages.callCabal2nix "types-matter" ./. {};
 
